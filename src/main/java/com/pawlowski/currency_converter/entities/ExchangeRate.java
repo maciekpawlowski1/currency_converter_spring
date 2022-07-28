@@ -8,7 +8,6 @@ public class ExchangeRate {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
     private int id;
 
     @Column(name = "valueFrom")
@@ -17,10 +16,8 @@ public class ExchangeRate {
     @Column(name = "valueTo")
     String to;
 
-    @Column(name = "exchangeRate")
     double exchangeRate;
 
-    @Column(name = "timestamp")
     String timestamp;
 
 

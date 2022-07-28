@@ -15,21 +15,26 @@ import java.util.function.BiConsumer;
 @Component
 public class ApiUpdater {
 
-    @Autowired
-    RestTemplate restTemplate;
 
     @Autowired
-    CurrencyService currencyService;
+    public ApiUpdater(RestTemplate restTemplate, CurrencyService currencyService) {
+        this.restTemplate = restTemplate;
+        this.currencyService = currencyService;
+    }
 
+    final RestTemplate restTemplate;
+
+    final CurrencyService currencyService;
     @Value("${rapidApi.apiKey}")
     String apiKey;
+
     @Value("${rapidApi.url}")
     String url;
 
     public RatesResponse updateData()
     {
         ResponseEntity<RatesResponse> response = makeRequest();
-        if(makeRequest().getStatusCode() == HttpStatus.OK)
+        if(response.getStatusCode() == HttpStatus.OK)
         {
             System.out.println("Request success");
             if(response.getBody() != null)
@@ -60,13 +65,12 @@ public class ApiUpdater {
         return response.getBody();
     }
 
-    public ResponseEntity<RatesResponse> makeRequest()
+    private ResponseEntity<RatesResponse> makeRequest()
     {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-RapidAPI-Key", apiKey);
 
         HttpEntity request = new HttpEntity(headers);
-
 
         return  restTemplate.exchange(
                 url,
